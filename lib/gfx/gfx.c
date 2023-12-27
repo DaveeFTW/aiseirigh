@@ -75,6 +75,16 @@ static uint32_t ARGB8888_to_RGB2220(uint32_t in) {
     return out;
 }
 
+static uint32_t ARGB8888_to_ABGR8888(uint32_t in) {
+    uint32_t out;
+
+    out = in & 0xFF00FF00;
+    out |= (in & 0xFF0000) >> 16;
+    out |= (in & 0xFF) << 16;
+
+    return out;
+}
+
 /**
  * @brief  Copy a rectangle of pixels from one part of the display to another.
  */
@@ -151,6 +161,10 @@ static void putpixel16(gfx_surface *surface, uint x, uint y, uint color) {
 
 static void putpixel32(gfx_surface *surface, uint x, uint y, uint color) {
     uint32_t *dest = &((uint32_t *)surface->ptr)[x + y * surface->stride];
+
+    if (surface->translate_color) {
+        color = surface->translate_color(color);
+    }
 
     *dest = color;
 }
@@ -576,6 +590,14 @@ gfx_surface *gfx_create_surface(void *ptr, uint width, uint height, uint stride,
             surface->pixelsize = 4;
             surface->len = (surface->height * surface->stride * surface->pixelsize);
             break;
+        case GFX_FORMAT_ABGR_8888:
+            surface->translate_color = &ARGB8888_to_ABGR8888;
+            surface->copyrect = &copyrect32;
+            surface->fillrect = &fillrect32;
+            surface->putpixel = &putpixel32;
+            surface->pixelsize = 4;
+            surface->len = (surface->height * surface->stride * surface->pixelsize);
+            break;
         case GFX_FORMAT_MONO:
             surface->translate_color = &ARGB8888_to_Luma;
             surface->copyrect = &copyrect8;
@@ -644,6 +666,9 @@ gfx_surface *gfx_create_surface_from_display(struct display_framebuffer *fb) {
             break;
         case IMAGE_FORMAT_MONO_8:
             format = GFX_FORMAT_MONO;
+            break;
+        case IMAGE_FORMAT_ABGR_8888:
+            format = GFX_FORMAT_ABGR_8888;
             break;
         default:
             dprintf(INFO, "invalid graphics format)");

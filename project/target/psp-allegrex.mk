@@ -1,0 +1,2 @@
+TARGET := psp-allegrex
+

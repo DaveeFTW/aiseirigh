@@ -25,7 +25,7 @@ typedef enum {
     GFX_FORMAT_ARGB_8888,
     GFX_FORMAT_RGB_x888,
     GFX_FORMAT_MONO,
-
+    GFX_FORMAT_ABGR_8888,
     GFX_FORMAT_MAX
 } gfx_format;
 

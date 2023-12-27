@@ -14,7 +14,7 @@
 
 __BEGIN_CDECLS
 
-int display_init(void *framebuffer);
+// int display_init(void *framebuffer);
 int display_enable(bool enable);
 void display_pre_freq_change(void);
 void display_post_freq_change(void);
@@ -26,6 +26,7 @@ enum display_format {
     DISPLAY_FORMAT_RGB_565,
     DISPLAY_FORMAT_RGB_x888,
     DISPLAY_FORMAT_ARGB_8888,
+    DISPLAY_FORMAT_ABGR_8888
 };
 
 enum image_format {
@@ -38,6 +39,7 @@ enum image_format {
     IMAGE_FORMAT_RGB_2220,
     IMAGE_FORMAT_RGB_x888,
     IMAGE_FORMAT_ARGB_8888,
+    IMAGE_FORMAT_ABGR_8888
 };
 
 struct display_info {

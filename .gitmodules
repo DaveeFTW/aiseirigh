@@ -1,2 +1,3 @@
 [submodule "external/platform/iplsdk"]
 	url = https://github.com/DaveeFTW/iplsdk.git
+	path = external/platform/iplsdk
